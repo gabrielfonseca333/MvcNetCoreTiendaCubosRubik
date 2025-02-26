@@ -1,0 +1,34 @@
+﻿@model List<Cubo>
+
+<h1 class="text-center my-4">Tienda de Cubos</h1>
+
+<div class="container">
+    <div class="d-flex justify-content-end mb-3">
+        <a 
+            asp-controller="Cubos"
+            asp-action="Create"
+            class="btn btn-primary">
+            Añadir Cubo
+        </a>
+    </div>
+    <div class="row">
+        @foreach (var cubo in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-sm h-100">
+                    <img src="~/assets/images/cubos/@cubo.Imagen" class="card-img-top img-fluid" alt="@cubo.Nombre">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">@cubo.Nombre</h5>
+                        <p class="card-text text-muted">@cubo.Marca - @cubo.Modelo</p>
+                        <h4 class="text-primary">€@cubo.Precio</h4>
+                        <a href="#" class="btn btn-success">Comprar</a>
+                        <div class="d-flex justify-content-center mt-2 gap-3">
+                            <a asp-controller="Cubos" asp-action="Details" asp-route-idcubo="@cubo.IdCubo" class="btn btn-outline-info btn-sm">Ver detalles</a>
+                            <a  class="btn btn-outline-warning btn-sm">Editar</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
