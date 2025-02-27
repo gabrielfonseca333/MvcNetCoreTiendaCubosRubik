@@ -44,5 +44,17 @@ namespace MvcNetCoreTiendaCubosRubik.Repositories
             await this.context.SaveChangesAsync();
 
         }
+
+        //update
+        public async Task UpdateCuboAsync(int idCubo, string nombre, string modelo, string marca, string imagen, int precio)
+        {
+            Cubo cubo = await this.FindCuboAsync(idCubo);
+            cubo.Nombre = nombre;
+            cubo.Modelo = modelo;
+            cubo.Marca = marca;
+            cubo.Imagen = imagen;
+            cubo.Precio = precio;
+            await this.context.SaveChangesAsync();
+        }
     }
 }

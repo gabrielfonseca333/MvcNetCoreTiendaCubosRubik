@@ -1,0 +1,61 @@
+﻿@model List<Cubo>
+
+<h1 class="text-center my-4">Carrito de Compras</h1>
+
+<div class="container">
+    @if (Model != null && Model.Count > 0)
+    {
+        <div class="row">
+            @foreach (Cubo cubo in Model)
+            {
+                // Recuperar la lista de favoritos desde ViewData
+                var favoritos = ViewData["Favoritos"] as List<Cubo>;
+                bool enFavoritos = favoritos != null && favoritos.Any(c => c.IdCubo == cubo.IdCubo);
+
+                <div class="col-md-4 mb-4">
+                    <div class="card shadow-sm h-100">
+                        <img src="~/assets/images/cubos/@cubo.Imagen" class="card-img-top img-fluid" alt="@cubo.Nombre">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">@cubo.Nombre</h5>
+                            <p class="card-text text-muted">@cubo.Marca - @cubo.Modelo</p>
+                            <h4 class="text-primary">€@cubo.Precio</h4>
+
+                            <!-- Botón para eliminar el cubo del carrito -->
+                            <a asp-controller="Cubos" asp-action="Carrito" asp-route-idcubo="@cubo.IdCubo" asp-route-accion="quitar"
+                               class="btn btn-danger">
+                                ❌ Eliminar
+                            </a>
+
+                            <!-- Botón de favoritos -->
+                            @if (enFavoritos)
+                            {
+                                <a asp-controller="Cubos" asp-action="Carrito" asp-route-idcubo="@cubo.IdCubo" asp-route-accion="quitarfavorito"
+                                   class="btn btn-warning">
+                                    ⭐ Quitar de Favoritos
+                                </a>
+                            }
+                            else
+                            {
+                                <a asp-controller="Cubos" asp-action="Carrito" asp-route-idcubo="@cubo.IdCubo" asp-route-accion="favorito"
+                                   class="btn btn-outline-warning">
+                                    ⭐ Añadir a Favoritos
+                                </a>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <div class="text-center mt-4">
+            <h3 class="text-success">Total: €@Model.Sum(c => c.Precio)</h3>
+
+            <!-- Botón para proceder al pago -->
+            <a asp-controller="Cubos" asp-action="Comprar" class="btn btn-primary">💳 Proceder al Pago</a>
+        </div>
+    }
+    else
+    {
+        <h2 class="text-center my-4">No has añadido nada al carrito</h2>
+    }
+</div>

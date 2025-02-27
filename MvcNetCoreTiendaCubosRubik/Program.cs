@@ -1,13 +1,27 @@
 using Microsoft.EntityFrameworkCore;
 using MvcNetCoreTiendaCubosRubik.Data;
+using MvcNetCoreTiendaCubosRubik.Helpers;
 using MvcNetCoreTiendaCubosRubik.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-
 builder.Services.AddTransient<RepositoryCubos>();
+
+//Session
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(10);
+});
+
+builder.Services.AddSingleton<HelperSessionContextAccessor>();
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+//Cache
+builder.Services.AddMemoryCache();
+builder.Services.AddDistributedMemoryCache();
 
 //Mysql
 string connectionString = builder.Configuration.GetConnectionString("MySqlCubos");
@@ -29,8 +43,9 @@ app.UseHttpsRedirection();
 app.UseRouting();
 app.UseStaticFiles();
 app.UseAuthorization();
-
 app.MapStaticAssets();
+
+app.UseSession();
 
 app.MapControllerRoute(
     name: "default",

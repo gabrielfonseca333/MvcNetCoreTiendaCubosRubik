@@ -1,5 +1,7 @@
 ﻿@model List<Cubo>
 
+    
+
 <h1 class="text-center my-4">Tienda de Cubos</h1>
 
 <div class="container">
@@ -14,6 +16,9 @@
     <div class="row">
         @foreach (var cubo in Model)
         {
+
+            
+
             <div class="col-md-4 mb-4">
                 <div class="card shadow-sm h-100">
                     <img src="~/assets/images/cubos/@cubo.Imagen" class="card-img-top img-fluid" alt="@cubo.Nombre">
@@ -21,10 +26,51 @@
                         <h5 class="card-title">@cubo.Nombre</h5>
                         <p class="card-text text-muted">@cubo.Marca - @cubo.Modelo</p>
                         <h4 class="text-primary">€@cubo.Precio</h4>
-                        <a href="#" class="btn btn-success">Comprar</a>
+
+                        @{
+                            // Recuperar la lista del carrito desde ViewData
+                            var carrito = ViewData["Carrito"] as List<Cubo>;
+                            bool enCarrito = carrito != null && carrito.Any(c => c.IdCubo == cubo.IdCubo);
+
+                            // Recuperar la lista de favoritos desde ViewData
+                            var favoritos = ViewData["Favoritos"] as List<Cubo>;
+                            bool enFavoritos = favoritos != null && favoritos.Any(c => c.IdCubo == cubo.IdCubo);
+                        }
+
+
+                        @if (enCarrito)
+                        {
+                            <a asp-controller="Cubos" asp-action="Index" asp-route-idcubo="@cubo.IdCubo" asp-route-accion="quitar" class="btn btn-danger">
+                                ❌ Quitar del carrito
+                            </a>
+                        }
+                        else
+                        {
+                            <a asp-controller="Cubos" asp-action="Index" asp-route-idcubo="@cubo.IdCubo" asp-route-accion="almacenar" class="btn btn-success">
+                                🛒 Añadir al carrito
+                            </a>
+                        }
+
                         <div class="d-flex justify-content-center mt-2 gap-3">
                             <a asp-controller="Cubos" asp-action="Details" asp-route-idcubo="@cubo.IdCubo" class="btn btn-outline-info btn-sm">Ver detalles</a>
-                            <a  class="btn btn-outline-warning btn-sm">Editar</a>
+                            <a asp-controller="Cubos" asp-action="Edit" asp-route-idcubo="@cubo.IdCubo" class="btn btn-outline-warning btn-sm">Editar</a>
+
+                            <!-- Botón de favoritos -->
+                            @if (enFavoritos)
+                            {
+                                <a asp-controller="Cubos" asp-action="Index" asp-route-idcubo="@cubo.IdCubo" asp-route-accion="quitarfavorito"
+                                   class="btn btn-warning">
+                                    ⭐ Quitar de Favoritos
+                                </a>
+                            }
+                            else
+                            {
+                                <a asp-controller="Cubos" asp-action="Index" asp-route-idcubo="@cubo.IdCubo" asp-route-accion="favorito"
+                                   class="btn btn-outline-warning">
+                                    ⭐ Añadir a Favoritos
+                                </a>
+                            }
+
                         </div>
                     </div>
                 </div>

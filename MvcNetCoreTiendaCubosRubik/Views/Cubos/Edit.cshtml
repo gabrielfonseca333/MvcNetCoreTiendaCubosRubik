@@ -1,0 +1,39 @@
+﻿@model Cubo
+
+<h1 class="text-center my-4">Editar Cubo</h1>
+
+<div class="container">
+    <form method="post" enctype="multipart/form-data" class="shadow p-4 rounded">
+        <!-- Campo oculto para mantener el ID -->
+        <input type="hidden" name="IdCubo" value="@Model.IdCubo" />
+
+        <label>Nombre</label>
+        <input type="text" name="Nombre" class="form-control" value="@Model.Nombre" required />
+
+        <label>Marca</label>
+        <input type="text" name="Marca" class="form-control" value="@Model.Marca" required />
+
+        <label>Modelo</label>
+        <input type="text" name="Modelo" class="form-control" value="@Model.Modelo" required />
+
+        <label>Precio</label>
+        <input type="number" name="Precio" class="form-control" value="@Model.Precio" required />
+
+        <div class="mt-3">
+            <label>Imagen actual:</label>
+            <br />
+            <img src="~/assets/images/cubos/@Model.Imagen" class="img-fluid rounded shadow-sm mb-3" style="max-width: 200px;" alt="@Model.Nombre" />
+        </div>
+
+        <label>Nueva imagen (opcional):</label>
+        <input type="file" name="fichero" class="form-control" />
+
+        <button class="btn btn-warning mt-3">
+            Guardar cambios
+        </button>
+
+        <a href="/Cubos/Index" class="btn btn-secondary mt-3">Cancelar</a>
+
+        <h2 class="text-success mt-3">@ViewBag.Mensaje</h2>
+    </form>
+</div>
