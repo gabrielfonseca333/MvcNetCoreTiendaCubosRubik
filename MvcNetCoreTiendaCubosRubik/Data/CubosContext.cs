@@ -8,5 +8,6 @@ namespace MvcNetCoreTiendaCubosRubik.Data
         {}
 
         public DbSet<Models.Cubo> Cubos { get; set; }
+        public DbSet<Models.Compra> Compras { get; set; }
     }
 }

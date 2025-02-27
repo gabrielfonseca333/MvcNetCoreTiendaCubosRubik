@@ -133,8 +133,10 @@ namespace MvcNetCoreTiendaCubosRubik.Controllers
 
 
 
-        public IActionResult Carrito(string accion, int idcubo)
+        public async Task <IActionResult> Carrito(string accion, int idcubo)
         {
+
+            
             List<Cubo> cubosCarrito = this.helper.GetCubosSession();
 
             // Clave de caché para los favoritos
@@ -151,7 +153,29 @@ namespace MvcNetCoreTiendaCubosRubik.Controllers
             {
                 if (accion.ToLower() == "comprar")
                 {
-                    // Este por ahora no lo vamos a implementar
+                    #region logica de compra
+
+                    // Insertar los cubos en la tabla Compra
+                    foreach (Cubo cubo in cubosCarrito)
+                    {
+
+                        /*
+                         Mi repository tiene un metodo InsertCompraAsync que recibe los parametros de la tabla Compra.
+                            id_compra, id_cubo, cantidad, precio, fechapedido.
+
+                        tengo que modificar el metodo para que reciba un objeto de tipo Compra, 
+                        porque el usuario puede comprar varios cubos a la vez.
+
+                        Además Implementamos la posibilidad de CANTIDAD de producto en el carrito.
+                        Si cambiamos la cantidad, cambiará el PRECIO TOTAL EN CLIENTE.
+
+                        Dime como proceder PASO A PASO. 
+                        Dime tanto en el Controller como en la View de Carrito. 
+
+                         */
+
+                    }
+                    #endregion
                 }
                 else if (accion.ToLower() == "quitar")
                 {
